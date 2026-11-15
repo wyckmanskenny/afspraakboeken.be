@@ -37,7 +37,7 @@ test('A saved contact request shows success; a failed request keeps the entered 
 });
 test('The homepage uses manual onboarding and the isolated public demo',()=>{
  assert.match(html,/href="#contact">Account aanvragen/);
- assert.match(html,/src="\.\/contact.js"/);
+ assert.match(html,/src="\.\/contact\.js(?:\?[^\"]*)?"/);
  assert.ok(!html.includes('data-app-link="register"'));
  assert.match(fs.readFileSync(new URL('../site.js',import.meta.url),'utf8'),/demo\/\?mode=book&tenant=lune/);
 });
