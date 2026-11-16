@@ -2,7 +2,7 @@
 // The packaged homepage points to the separate app. The private review copy
 // lives under /website/ alongside the app and keeps its navigation local.
 const appBase=location.hostname.endsWith('.chatgpt.site')&&location.pathname.startsWith('/website/')?new URL('../',location.href):new URL('https://app.afspraakboeken.be/');
-const targets={app:new URL('./',appBase),register:new URL('registreren/',appBase),booking:new URL('demo/?mode=book&tenant=lune',appBase)};
+const targets={app:new URL('./',appBase),register:new URL('registreren/',appBase),trial:new URL('registreren/?mode=trial',appBase),booking:new URL('demo/?mode=book&tenant=lune',appBase)};
 for(const [key,value] of Object.entries({primary:'#264653',secondary:'#2a9d8f',background:'#f8fafb'}))targets.booking.searchParams.set('theme_'+key,value);
 for(const link of document.querySelectorAll('[data-app-link]'))link.href=targets[link.dataset.appLink].href;
 const menu=document.querySelector('.menu-toggle'),navigation=document.getElementById('navigation');
@@ -22,6 +22,6 @@ for(const button of document.querySelectorAll('[data-sector]'))button.addEventLi
 for(const button of document.querySelectorAll('[data-palette]'))button.addEventListener('click',()=>{document.querySelector('[data-brand-demo]').dataset.palette=button.dataset.palette;for(const item of document.querySelectorAll('button[data-palette]'))item.setAttribute('aria-pressed',String(item===button))});
 const demo=document.getElementById('demo-dialog'),frame=document.getElementById('demo-frame');let previousFocus;
 for(const button of document.querySelectorAll('[data-open-demo]'))button.addEventListener('click',()=>{previousFocus=document.activeElement;if(!frame.getAttribute('src'))frame.src=targets.booking.href;demo.showModal();document.getElementById('close-demo').focus()});
-document.getElementById('close-demo').addEventListener('click',()=>demo.close());
-demo.addEventListener('close',()=>previousFocus?.focus());
+document.getElementById('close-demo')?.addEventListener('click',()=>demo.close());
+demo?.addEventListener('close',()=>previousFocus?.focus());
 for(const link of document.querySelectorAll('[data-open-faq]'))link.addEventListener('click',()=>{document.getElementById(link.dataset.openFaq).open=true});
