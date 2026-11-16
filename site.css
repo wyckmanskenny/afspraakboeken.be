@@ -58,3 +58,11 @@ button:focus-visible,a:focus-visible,summary:focus-visible{outline-color:var(--t
 .information-cta{display:grid;grid-template-columns:1.2fr 1fr;align-items:center;gap:60px}.information-cta h2{font-size:clamp(30px,4vw,48px)}.information-cta p:not(.eyebrow){max-width:550px;margin:22px 0 0;color:var(--muted);line-height:1.8}.information-action{display:flex;align-items:center;flex-direction:column;gap:18px}.information-action small{color:#607580;font-size:12px}.nav-wrap nav{gap:22px}@media(max-width:850px){.information-cta{grid-template-columns:1fr;gap:30px}.information-action{align-items:flex-start}.information-action .button{font-size:13px}}
 
 .nav-wrap .nav-app{display:inline-flex}
+
+/* Keep the decorative orbit inside its artwork, rather than widening the page. */
+.visual-orbit{inset:0;border:0;border-radius:inherit;transform:none;overflow:hidden;pointer-events:none}
+.visual-orbit::before{content:'';position:absolute;inset:20px -20px 5px 20px;border:1px solid #b7d3d0;border-radius:50%;transform:rotate(-20deg)}
+.hero-copy,.hero-visual,.sector-grid>*,.brand-section>*,.faq-section>*,.pricing-offer>*,.pricing-faq>*{min-width:0}
+.button{max-width:100%;white-space:normal}
+.button>span[aria-hidden]{flex-shrink:0}
+@media(max-width:620px){.hero h1 em{white-space:normal}.nav-wrap{gap:12px}.menu-toggle{flex-shrink:0}.visual-orbit::before{inset:16px -6px 10px 16px}}
