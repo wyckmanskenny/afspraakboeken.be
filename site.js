@@ -30,3 +30,9 @@ for(const link of document.querySelectorAll('[data-open-faq]'))link.addEventList
 document.addEventListener('click',event=>{if(solutionsMenu?.open&&!solutionsMenu.contains(event.target))solutionsMenu.open=false;});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&solutionsMenu?.open){solutionsMenu.open=false;solutionsMenu.querySelector('summary').focus();}});
 for(const link of navigation.querySelectorAll('a')){const url=new URL(link.href,location.href);if(url.origin===location.origin&&!url.hash&&url.pathname===location.pathname)link.setAttribute('aria-current','page');}
+
+// Hover for a mouse; native details click/keyboard behavior remains available.
+let solutionCloseTimer;
+solutionsMenu?.addEventListener('pointerenter',event=>{if(event.pointerType!=='mouse')return;document.defaultView.clearTimeout(solutionCloseTimer);solutionsMenu.open=true;});
+solutionsMenu?.addEventListener('pointerleave',event=>{if(event.pointerType!=='mouse')return;document.defaultView.clearTimeout(solutionCloseTimer);solutionCloseTimer=document.defaultView.setTimeout(()=>{if(!solutionsMenu.contains(document.activeElement))solutionsMenu.open=false;},220);});
+solutionsMenu?.addEventListener('focusout',()=>{document.defaultView.setTimeout(()=>{if(!solutionsMenu.contains(document.activeElement)&&!solutionsMenu.matches(':hover'))solutionsMenu.open=false;},0);});
