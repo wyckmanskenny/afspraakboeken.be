@@ -6,7 +6,8 @@ const targets={app:new URL('./',appBase),register:new URL('registreren/',appBase
 for(const [key,value] of Object.entries({primary:'#264653',secondary:'#2a9d8f',background:'#f8fafb'}))targets.booking.searchParams.set('theme_'+key,value);
 for(const link of document.querySelectorAll('[data-app-link]'))link.href=targets[link.dataset.appLink].href;
 const menu=document.querySelector('.menu-toggle'),navigation=document.getElementById('navigation');
-function closeMenu(){menu.setAttribute('aria-expanded','false');navigation.classList.remove('open')}
+const solutionsMenu=document.querySelector('.solutions-menu');
+function closeMenu(){if(solutionsMenu)solutionsMenu.open=false;menu.setAttribute('aria-expanded','false');navigation.classList.remove('open')}
 menu.addEventListener('click',()=>{const open=menu.getAttribute('aria-expanded')!=='true';menu.setAttribute('aria-expanded',String(open));navigation.classList.toggle('open',open)});
 navigation.addEventListener('click',event=>{if(event.target.closest('a'))closeMenu()});
 document.addEventListener('keydown',event=>{if(event.key==='Escape'&&menu.getAttribute('aria-expanded')==='true'){closeMenu();menu.focus()}});
@@ -25,3 +26,7 @@ for(const button of document.querySelectorAll('[data-open-demo]'))button.addEven
 document.getElementById('close-demo')?.addEventListener('click',()=>demo.close());
 demo?.addEventListener('close',()=>previousFocus?.focus());
 for(const link of document.querySelectorAll('[data-open-faq]'))link.addEventListener('click',()=>{document.getElementById(link.dataset.openFaq).open=true});
+
+document.addEventListener('click',event=>{if(solutionsMenu?.open&&!solutionsMenu.contains(event.target))solutionsMenu.open=false;});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'&&solutionsMenu?.open){solutionsMenu.open=false;solutionsMenu.querySelector('summary').focus();}});
+for(const link of navigation.querySelectorAll('a')){const url=new URL(link.href,location.href);if(url.origin===location.origin&&!url.hash&&url.pathname===location.pathname)link.setAttribute('aria-current','page');}
