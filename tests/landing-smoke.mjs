@@ -20,3 +20,8 @@ test('Sector pages start with their own service and reach the matching confirmat
  const w=new Window();w.document.body.innerHTML=fs.readFileSync(new URL(slug+'/index.html',root),'utf8');w.matchMedia=()=>({matches:true,addEventListener(){}});vm.runInNewContext(fs.readFileSync(new URL('sector-demo.js',root),'utf8'),{window:w,document:w.document,IntersectionObserver:class{observe(){}}});assert.equal(w.document.querySelector('.walk-service strong').textContent,service);for(let i=0;i<6;i++)w.document.getElementById('walkthrough-next').click();assert.ok(w.document.querySelector('.walk-thanks').textContent.includes(service));await w.happyDOM.close();
  }
 });
+test('Legacy sector URLs immediately redirect to canonical sector pages and stay out of the sitemap',async()=>{
+ for(const suffix of ['', '/dakwerkers','/beauty-wellness','/installateurs','/tuinaannemers']){
+ const w=new Window();w.document.write(fs.readFileSync(new URL('voor'+suffix+'/index.html',root),'utf8'));const target='https://afspraakboeken.be/sector'+suffix+'/';assert.equal(w.document.querySelector('meta[http-equiv=refresh]').content,'0; url='+target);assert.equal(w.document.querySelector('link[rel=canonical]').href,target);assert.ok(urls.includes(target));assert.ok(!urls.some(u=>u.includes('/voor/')));await w.happyDOM.close();
+ }
+});

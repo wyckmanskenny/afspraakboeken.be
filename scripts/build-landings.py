@@ -272,3 +272,8 @@ for path in paths:
  s=re.sub(r'site\.(css|js)\?v=[\d.]+',r'site.\1?v=0.14.1',s);p.write_text(s)
 (R/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('  <url><loc>https://afspraakboeken.be/'+p.removesuffix('index.html')+'</loc></url>\n' for p in paths)+'</urlset>\n')
 (R/'deployment.json').write_text(json.dumps({'version':'0.14.1','site':'afspraakboeken.be','release':'sector-url-migration-and-search-intent-copy'},indent=2)+'\n')
+
+# Static-host fallback: an immediate refresh when Apache redirects are unavailable.
+for old in ['voor','voor/dakwerkers','voor/beauty-wellness','voor/installateurs','voor/tuinaannemers']:
+    target='https://afspraakboeken.be/'+old.replace('voor','sector',1)+'/'
+    save(old,'<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0; url='+target+'"><link rel="canonical" href="'+target+'"><title>Pagina verhuisd · Afspraakboeken.be</title></head><body><p>Deze pagina is verhuisd. <a href="'+target+'">Bekijk de sectorpagina</a>.</p></body></html>')
