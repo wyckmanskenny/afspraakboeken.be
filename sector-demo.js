@@ -14,7 +14,7 @@ const sectors={
  coach:{business:'Ruimte voor Groei',service:'Kennismakingsgesprek',other:'Individuele coaching',duration:'30 min',field:'Waar wil je aan werken?',value:'Meer rust en overzicht in mijn werk.',color:'#675481',tint:'#f3eff9'},
  garage:{business:'Garage De Baan',service:'Onderhoud wagen',other:'Diagnose & advies',duration:'60 min',field:'Wil je vooraf iets meegeven?',value:'Graag een jaarlijks onderhoud.',color:'#3e5879',tint:'#edf2f9'}
 };
-let selected='dak',step=0,timer=null,inView=!('IntersectionObserver' in window),wanted=true;
+let selected=sectors[root.dataset.initialSector]?root.dataset.initialSector:'dak',step=0,timer=null,inView=!('IntersectionObserver' in window),wanted=true;
 const reduced=window.matchMedia?.('(prefers-reduced-motion: reduce)');if(reduced?.matches)wanted=false;
 const captions=['Je klant ziet de diensten van jouw zaak.','Een klik op de dienst opent meteen de kalender.','Je klant ziet welke dagen en uren beschikbaar zijn.','Een dag en een uur zijn gekozen.','Alleen nog de gegevens die jij nodig hebt.','Je klant vult de gegevens in en bevestigt de boeking.','Je klant ziet meteen een duidelijke bevestiging.','Automatisch: de aanvraag staat op je bord, de afspraak in je agenda en jij krijgt een e-mailmelding.','Jij volgt op: na contact verplaats je de kaart. Zo zie je wie al geholpen is.'];
 const times=['09:00','11:00','14:30'];
