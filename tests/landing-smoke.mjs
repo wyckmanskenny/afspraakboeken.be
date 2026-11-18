@@ -16,7 +16,7 @@ test('All 13 public pages have unique SEO metadata, shared navigation and workin
  }
 });
 test('Sector pages start with their own service and reach the matching confirmation',async()=>{
- for(const [slug,service] of [['voor/dakwerkers','Opmeting dak'],['voor/beauty-wellness','Laserontharing'],['voor/installateurs','Advies & opmeting airco'],['voor/tuinaannemers','Tuinbezoek & opmeting']]){
+ for(const [slug,service] of [['sector/dakwerkers','Opmeting dak'],['sector/beauty-wellness','Laserontharing'],['sector/installateurs','Advies & opmeting airco'],['sector/tuinaannemers','Tuinbezoek & opmeting']]){
  const w=new Window();w.document.body.innerHTML=fs.readFileSync(new URL(slug+'/index.html',root),'utf8');w.matchMedia=()=>({matches:true,addEventListener(){}});vm.runInNewContext(fs.readFileSync(new URL('sector-demo.js',root),'utf8'),{window:w,document:w.document,IntersectionObserver:class{observe(){}}});assert.equal(w.document.querySelector('.walk-service strong').textContent,service);for(let i=0;i<6;i++)w.document.getElementById('walkthrough-next').click();assert.ok(w.document.querySelector('.walk-thanks').textContent.includes(service));await w.happyDOM.close();
  }
 });

@@ -4,3 +4,10 @@
     Header always set Cache-Control "no-cache, must-revalidate, max-age=0"
   </FilesMatch>
 </IfModule>
+
+# Permanent migration of the former sector URLs. Keep existing query strings.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^voor(?:/index\.html)?/?$ /sector/ [R=301,L]
+  RewriteRule ^voor/(dakwerkers|beauty-wellness|installateurs|tuinaannemers)(?:/index\.html)?/?$ /sector/$1/ [R=301,L]
+</IfModule>
