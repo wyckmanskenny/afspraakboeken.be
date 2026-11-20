@@ -250,7 +250,7 @@ walk=re.search(r'(<div id="sector-walkthrough".*?</noscript></div>)',home).group
 keys={'sector/dakwerkers':'dak','sector/beauty-wellness':'beauty','sector/installateurs':'airco','sector/tuinaannemers':'garden','online-afspraken':'dak'}
 def shell(slug,title,desc,body,animated=False):
  url='https://afspraakboeken.be/'+slug+'/'
- return '<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow,max-image-preview:large"><title>'+e(title)+'</title><meta name="description" content="'+e(desc)+'"><link rel="canonical" href="'+url+'"><meta property="og:type" content="website"><meta property="og:locale" content="nl_BE"><meta property="og:title" content="'+e(title)+'"><meta property="og:description" content="'+e(desc)+'"><meta property="og:url" content="'+url+'"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/site.css?v=0.14.1"><script src="/site.js?v=0.14.1" defer></script>'+('<script src="/sector-demo.js?v=0.14.1" defer></script>' if animated else '')+'</head><body><a class="skip" href="#inhoud">Naar de inhoud</a>'+header+'<main id="inhoud">'+body+'</main>'+footer+'</body></html>\n'
+ return '<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow,max-image-preview:large"><title>'+e(title)+'</title><meta name="description" content="'+e(desc)+'"><link rel="canonical" href="'+url+'"><meta property="og:type" content="website"><meta property="og:locale" content="nl_BE"><meta property="og:title" content="'+e(title)+'"><meta property="og:description" content="'+e(desc)+'"><meta property="og:url" content="'+url+'"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/site.css?v=0.14.2"><script src="/site.js?v=0.14.2" defer></script>'+('<script src="/sector-demo.js?v=0.14.2" defer></script>' if animated else '')+'</head><body><a class="skip" href="#inhoud">Naar de inhoud</a>'+header+'<main id="inhoud">'+body+'</main>'+footer+'</body></html>\n'
 def save(slug,text):
  p=R/slug/'index.html';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text)
 cta='<div class="actions"><a class="button light" href="https://app.afspraakboeken.be/registreren/?mode=trial">14 dagen gratis proberen</a><a class="text-link" href="/contact/">Contacteer ons</a></div><p class="landing-note">Geen creditcard nodig. Geen automatische betaling.</p>'
@@ -272,9 +272,9 @@ paths=['index.html','prijzen/index.html','alles-in-1/index.html','contact/index.
 for path in paths:
  p=R/path;s=p.read_text();s=re.sub(r'<header class="header">[\s\S]*?</header>',lambda _:header,s,count=1);s=re.sub(r'<footer\b[\s\S]*?</footer>',lambda _:footer,s,count=1)
  for old,new in links.items():s=s.replace('href="'+old+'"','href="'+new+'"')
- s=re.sub(r'site\.(css|js)\?v=[\d.]+',r'site.\1?v=0.14.1',s);p.write_text(s)
+ s=re.sub(r'site\.(css|js)\?v=[\d.]+',r'site.\1?v=0.14.2',s);p.write_text(s)
 (R/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('  <url><loc>https://afspraakboeken.be/'+p.removesuffix('index.html')+'</loc></url>\n' for p in paths)+'</urlset>\n')
-(R/'deployment.json').write_text(json.dumps({'version':'0.14.1','site':'afspraakboeken.be','release':'sector-url-migration-and-search-intent-copy'},indent=2)+'\n')
+(R/'deployment.json').write_text(json.dumps({'version':'0.14.2','site':'afspraakboeken.be','release':'sector-url-migration-and-search-intent-copy'},indent=2)+'\n')
 
 # Static-host fallback: an immediate refresh when Apache redirects are unavailable.
 for old in ['voor','voor/dakwerkers','voor/beauty-wellness','voor/installateurs','voor/tuinaannemers']:

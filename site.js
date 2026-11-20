@@ -27,3 +27,11 @@ let solutionCloseTimer;
 solutionsMenu?.addEventListener('pointerenter',event=>{if(event.pointerType!=='mouse')return;document.defaultView.clearTimeout(solutionCloseTimer);solutionsMenu.open=true;});
 solutionsMenu?.addEventListener('pointerleave',event=>{if(event.pointerType!=='mouse')return;document.defaultView.clearTimeout(solutionCloseTimer);solutionCloseTimer=document.defaultView.setTimeout(()=>{if(!solutionsMenu.contains(document.activeElement))solutionsMenu.open=false;},220);});
 solutionsMenu?.addEventListener('focusout',()=>{document.defaultView.setTimeout(()=>{if(!solutionsMenu.contains(document.activeElement)&&!solutionsMenu.matches(':hover'))solutionsMenu.open=false;},0);});
+
+// Homepage-only shortcuts, revealed after ten percent of the scrollable page.
+const floatingActions=document.getElementById('floating-actions');
+if(floatingActions){
+ const viewport=document.defaultView;
+ const updateFloating=()=>{const distance=document.documentElement.scrollHeight-viewport.innerHeight;floatingActions.hidden=distance<=0||viewport.scrollY/distance<0.1;};
+ viewport.addEventListener('scroll',updateFloating,{passive:true});viewport.addEventListener('resize',updateFloating);viewport.addEventListener('load',updateFloating);updateFloating();
+}
