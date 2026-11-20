@@ -9,13 +9,14 @@ pages=[('slim-contactformulier',
   'Slim contactformulier voor je website | Afspraakboeken.be',
   'Verzamel aanvragen via een slim contactformulier in je huisstijl. Ontvang de juiste gegevens en volg elke '
   'aanvraag overzichtelijk op.',
-  'Een contactformulier dat je aanvragen meteen op orde zet.',
-  'Een bezoeker heeft interesse. Geef die een eenvoudige manier om te vertellen wat hij nodig heeft. De '
-  'aanvraag komt op je bord terecht, met de gegevens die je nodig hebt om te antwoorden.',
-  [('Vraag wat je vooraf wilt weten',
-    'Bepaal of telefoonnummer, adres en opmerkingen zichtbaar, optioneel of verplicht zijn. Naam en '
-    'e-mailadres vormen de basis. Zo vraag je bij een plaatsbezoek andere gegevens dan bij een '
-    'kennismakingsgesprek.'),
+  'Een slim contactformulier, gekoppeld aan je opvolging.',
+  'Laat bezoekers vertellen wat ze nodig hebben en eventueel meteen een afspraak kiezen. Elke aanvraag komt '
+  'overzichtelijk op je bord. Met de optionele CRM-uitbreiding houd je ook klantgegevens, notities en '
+  'vervolgacties bij elkaar.',
+  [('Betere gesprekken beginnen met de juiste informatie',
+    'Laat een bezoeker een dienst kiezen en vraag de gegevens die je nodig hebt. Denk aan een adres voor een '
+    'opmeting of een korte toelichting bij een adviesvraag. Zo kun jij beoordelen of de aanvraag bij je '
+    'bedrijf past. Voor eigen extra vragen is er de optionele CRM-uitbreiding.'),
    ('Met of zonder een afspraak',
     'Laat bezoekers meteen een dienst en een vrij moment kiezen. Wil je eerst zelf overleggen? Ontvang dan '
     'alleen een aanvraag, zonder een tijdstip te reserveren.'),
@@ -37,8 +38,9 @@ pages=[('slim-contactformulier',
   'Een eenvoudig online boekingssysteem voor zelfstandigen en kleine bedrijven. Laat klanten afspraken '
   'boeken en houd de opvolging bij op één bord.',
   'Een online boekingssysteem dat ook de opvolging bijhoudt.',
-  'Een opmeting, behandeling of adviesgesprek: je klant kiest een dienst en een vrij moment op je website. '
-  'Jij beheert wanneer je beschikbaar bent.',
+  'Van een gerichte aanvraag naar een ingeplande afspraak: je klant kiest een dienst, een vrij moment en '
+  'vult de nodige gegevens in. Jij begint het gesprek met meer context en volgt de aanvraag verder op vanuit '
+  'dezelfde omgeving.',
   [('Jouw diensten, jouw beschikbare momenten',
     'Voeg je diensten toe en bepaal de duur. Stel je beschikbaarheid in en blokkeer momenten waarop je niet '
     'kunt. Bezoekers kiezen uit de beschikbare tijdstippen.'),
@@ -66,18 +68,19 @@ pages=[('slim-contactformulier',
   'Eenvoudig leads opvolgen op één bord | Afspraakboeken.be',
   'Volg leads en aanvragen eenvoudig op. Verzamel nieuwe contacten via je website en zie op je bord wie je '
   'nog moet bellen of beantwoorden.',
-  'Eenvoudig leads opvolgen, van eerste vraag tot volgende stap.',
-  'Tussen je werk door wil je snel weten wie je moet bellen. Op het aanvraagbord staan nieuwe aanvragen, '
-  'contactgegevens en de volgende stappen overzichtelijk bij elkaar.',
+  'Eindelijk eenvoudig leads opvolgen en verder helpen.',
+  'Van een eerste vraag naar een afspraak en een mogelijke nieuwe klant: zie welke stap aan de beurt is. '
+  'Verzamel aanvragen op één bord, neem gericht contact op en houd bij wie je al geholpen hebt.',
   [('Nieuwe aanvragen verschijnen vanzelf',
     'Wanneer iemand je formulier invult, verschijnt de aanvraag in de eerste kolom. Je krijgt een melding en '
     'hoeft de gegevens niet vanuit een e-mail over te typen.'),
    ('Maak de kolommen passend voor jouw werk',
     'Begin eenvoudig met Nieuw, Gecontacteerd en Afgerond. Je kunt kolomnamen aanpassen en kolommen '
     'toevoegen. Verplaats de kaart wanneer je een klant hebt gesproken of een aanvraag hebt afgerond.'),
-   ('Ook telefoontjes krijgen een plek',
-    'Komt een aanvraag via de telefoon of een gesprek binnen? Voeg zelf een lead toe. Gebruik het bord in '
-    'volledig scherm wanneer je rustig je aanvragen wilt opvolgen.')],
+   ('Van interesse naar een volgende stap',
+    'Een aanvraag wordt pas een klant als je ermee aan de slag gaat. Bel terug, bespreek de behoefte en plan '
+    'waar nodig een afspraak. Ook een lead uit een telefoongesprek voeg je zelf toe aan het bord. Zo werk je '
+    'gericht aan het omzetten van interesse in klanten.')],
   [('Is dit aanvraagbord een betaalde CRM-uitbreiding?',
     'Het aanvraagbord hoort bij de basis. De optionele CRM-uitbreiding voegt onder meer klantfiches, interne '
     'notities en opvolgacties toe.'),
@@ -91,10 +94,10 @@ pages=[('slim-contactformulier',
   'Eenvoudig CRM voor zelfstandigen en kmo’s | Afspraakboeken.be',
   'Een eenvoudig CRM voor zelfstandigen en kleine kmo’s. Bewaar contacten, interne notities en opvolgacties '
   'met de optionele CRM-uitbreiding.',
-  'Eenvoudig CRM voor zelfstandigen en kleine kmo’s.',
-  'Je zoekt klantenbeheer dat je dagelijks kunt gebruiken: contactgegevens terugvinden, noteren wat '
-  'besproken is en je volgende actie vastleggen. De optionele CRM-uitbreiding bouwt verder op je '
-  'aanvraagbord.',
+  'Eindelijk een eenvoudig CRM voor zelfstandigen en ondernemers.',
+  'Je wilt weten wie je klant is, wat jullie besproken hebben en wat je nog moet doen. De optionele '
+  'CRM-uitbreiding brengt contacten, interne notities en opvolgacties samen met je aanvragen. Overzichtelijk '
+  'klantenbeheer voor jouw bedrijf, ook als kleine kmo.',
   [('Een klantfiche met de informatie bij elkaar',
     'Bewaar contactgegevens en raadpleeg de informatie die je voor de opvolging nodig hebt. Zo begin je bij '
     'een volgend gesprek met de context van je klant.'),
