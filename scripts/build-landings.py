@@ -273,42 +273,68 @@ pages.extend([
    ('Kan ik offertes en keuringsverslagen maken?','Nee. Afspraakboeken ondersteunt aanvraagopvolging, afspraakplanning en optioneel klantenbeheer. Offertes en technische documenten maak je via je eigen werkwijze.'),
    ('Kunnen klanten ook alleen informatie aanvragen?','Ja. Met de aanvraagmodus slaan bezoekers de kalender over. Jij neemt daarna contact op en plant eventueel een plaatsbezoek.')])
 ])
+categories=json.loads((R/'scripts/sector-categories.json').read_text())
+category_by_slug={'sector/'+c['slug']:c for c in categories}
+for c in categories:
+ slug='sector/'+c['slug']
+ if any(p[0]==slug for p in pages):continue
+ sections=c['sections']
+ faqs=[(c['question'],c['answer']),('Kan ik starten zonder CRM?','Ja. Het slimme formulier, de afspraakplanning en het aanvraagbord vormen de basis. Contactfiches, interne notities en opvolgacties zijn onderdeel van de optionele CRM-module.'),('Hoe plaats ik dit op mijn website?','Je voegt de widget toe aan je bestaande website. Toon het formulier meteen op de pagina of laat het via een knop openen. Je beheert de diensten en kleuren vanuit je account.')]
+ pages.append((slug,c['label'],c['title'],c['description'],c['heading'],c['intro'],sections,faqs))
+def sector_details(slug,label,sections):
+ c=category_by_slug.get(slug)
+ rows=c['rows'] if c else [(h,t,'Bekijk en volg de aanvraag op in je omgeving') for h,t in sections]
+ benefits=c['benefits'] if c else ['Je diensten en beschikbare momenten zelf beheren','Aanvragen verzamelen op één overzichtelijk bord','Optioneel uitbreiden met CRM voor contacten en interne notities']
+ table='<section class="wrap sector-usecases"><h2>Zo gebruik je Afspraakboeken in '+e(label.lower())+'</h2><div class="sector-table-scroll" tabindex="0" role="region" aria-label="Praktijkvoorbeelden voor '+e(label)+'"><table><caption>Van klantvraag naar een volgende stap</caption><thead><tr><th scope="col">Situatie</th><th scope="col">Via jouw formulier</th><th scope="col">Jouw opvolging</th></tr></thead><tbody>'+''.join('<tr><th scope="row">'+e(a)+'</th><td>'+e(b)+'</td><td>'+e(d)+'</td></tr>' for a,b,d in rows)+'</tbody></table></div></section>'
+ table+='<section class="wrap sector-advantages"><h2>De voordelen voor jouw organisatie</h2><ul>'+''.join('<li>'+e(b)+'</li>' for b in benefits)+'</ul><p>Het aanvraagbord hoort bij de basis. CRM is een optionele uitbreiding. <a href="/prijzen/">Bekijk de pakketten en prijzen</a>.</p></section>'
+ if c and c['related']:
+  table+='<section class="wrap landing-related"><h2>Meer voorbeelden voor jouw vak</h2><div>'+''.join('<a href="/sector/'+e(k)+'/">'+e(next(p[1] for p in pages if p[0]=='sector/'+k))+'</a>' for k in c['related'])+'</div></section>'
+ return table
 header=(R/'partials/header.html').read_text().strip()
 links={'/alles-in-1/#contactformulier':'/slim-contactformulier/','/alles-in-1/#afspraken':'/online-afspraken/','/alles-in-1/#aanvragen':'/aanvragen-opvolgen/','/alles-in-1/#crm':'/crm-voor-zelfstandigen/'}
 for old,new in links.items():header=header.replace(old,new)
 (R/'partials/header.html').write_text(header+'\n')
-footer='<footer class="footer marketing-footer wrap"><div class="footer-brand"><a class="logo" href="/"><strong>afspraakboeken<span>.be</span></strong></a><p>Van eerste aanvraag tot duidelijke opvolging.</p></div><nav aria-label="Oplossingen in de footer"><h2>Oplossingen</h2>'+''.join(f'<a href="/{p[0]}/">{e(p[1])}</a>' for p in pages[:4])+'<a href="/alles-in-1/">Alle oplossingen</a></nav><nav aria-label="Sectoren in de footer"><h2>Sectoren</h2>'+''.join(f'<a href="/{p[0]}/">{e(p[1])}</a>' for p in pages[4:])+'<a href="/sector/">Bekijk alle sectoren</a></nav><nav aria-label="Over Afspraakboeken.be"><h2>Afspraakboeken.be</h2><a href="/prijzen/">Prijzen</a><a href="https://app.afspraakboeken.be/demo/?mode=choose&amp;tenant=lune">Bekijk de demo</a><a href="/contact/">Contacteer ons</a><a href="https://app.afspraakboeken.be/">Inloggen</a><a href="/#privacy">Privacyinformatie</a></nav><div class="footer-bottom"><small>© 2026 Afspraakboeken.be</small><small>Wycked Media ®</small></div></footer>'
+footer='<footer class="footer marketing-footer wrap"><div class="footer-brand"><a class="logo" href="/"><strong>afspraakboeken<span>.be</span></strong></a><p>Van eerste aanvraag tot duidelijke opvolging.</p></div><nav aria-label="Oplossingen in de footer"><h2>Oplossingen</h2>'+''.join(f'<a href="/{p[0]}/">{e(p[1])}</a>' for p in pages[:4])+'<a href="/alles-in-1/">Alle oplossingen</a></nav><nav aria-label="Sectoren in de footer"><h2>Sectoren</h2>'+''.join(f'<a href="/{p[0]}/">{e(p[1])}</a>' for p in [next(p for p in pages if p[0]=='sector/'+c['slug']) for c in categories[:6]])+'<a href="/sector/">Bekijk alle sectoren</a></nav><nav aria-label="Over Afspraakboeken.be"><h2>Afspraakboeken.be</h2><a href="/prijzen/">Prijzen</a><a href="https://app.afspraakboeken.be/demo/?mode=choose&amp;tenant=lune">Bekijk de demo</a><a href="/contact/">Contacteer ons</a><a href="https://app.afspraakboeken.be/">Inloggen</a><a href="/#privacy">Privacyinformatie</a></nav><div class="footer-bottom"><small>© 2026 Afspraakboeken.be</small><small>Wycked Media ®</small></div></footer>'
 (R/'partials/footer.html').write_text(footer+'\n')
 home=(R/'index.html').read_text()
 walk=re.search(r'(<div id="sector-walkthrough".*?</noscript></div>)',home).group(1)
 keys={'sector/dakwerkers':'dak','sector/beauty-wellness':'beauty','sector/installateurs':'airco','sector/tuinaannemers':'garden','online-afspraken':'dak'}
 def shell(slug,title,desc,body,animated=False):
  url='https://afspraakboeken.be/'+slug+'/'
- return '<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow,max-image-preview:large"><title>'+e(title)+'</title><meta name="description" content="'+e(desc)+'"><link rel="canonical" href="'+url+'"><meta property="og:type" content="website"><meta property="og:locale" content="nl_BE"><meta property="og:title" content="'+e(title)+'"><meta property="og:description" content="'+e(desc)+'"><meta property="og:url" content="'+url+'"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/site.css?v=0.15.1"><script src="/site.js?v=0.15.1" defer></script>'+('<script src="/sector-demo.js?v=0.15.1" defer></script>' if animated else '')+'</head><body><a class="skip" href="#inhoud">Naar de inhoud</a>'+header+'<main id="inhoud">'+body+'</main>'+footer+'</body></html>\n'
+ return '<!doctype html><html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="index,follow,max-image-preview:large"><title>'+e(title)+'</title><meta name="description" content="'+e(desc)+'"><link rel="canonical" href="'+url+'"><meta property="og:type" content="website"><meta property="og:locale" content="nl_BE"><meta property="og:title" content="'+e(title)+'"><meta property="og:description" content="'+e(desc)+'"><meta property="og:url" content="'+url+'"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/site.css?v=0.16.0"><script src="/site.js?v=0.16.0" defer></script>'+('<script src="/sector-demo.js?v=0.16.0" defer></script>' if animated else '')+'</head><body><a class="skip" href="#inhoud">Naar de inhoud</a>'+header+'<main id="inhoud">'+body+'</main>'+footer+'</body></html>\n'
 def save(slug,text):
  p=R/slug/'index.html';p.parent.mkdir(parents=True,exist_ok=True);p.write_text(text)
 cta='<div class="actions"><a class="button light" href="https://app.afspraakboeken.be/registreren/?mode=trial">14 dagen gratis proberen</a><a class="text-link" href="/contact/">Contacteer ons</a></div><p class="landing-note">Geen creditcard nodig. Geen automatische betaling.</p>'
 for slug,label,title,desc,heading,intro,sections,faqs in pages:
- sector=slug in keys
- if sector:visual=walk.replace('class="sector-walkthrough"',f'class="sector-walkthrough" data-initial-sector="{keys[slug]}"')
+ sector=slug.startswith('sector/')
+ animated=slug in keys
+ if animated:visual=walk.replace('class="sector-walkthrough"',f'class="sector-walkthrough" data-initial-sector="{keys[slug]}"')
+ elif slug in category_by_slug:
+  c=category_by_slug[slug]
+  visual='<div class="landing-preview"><small>Voorbeeld voor '+e(label)+'</small><h2>'+e(c['rows'][0][0])+'</h2><div class="demo-field">Naam en contactgegevens</div><div class="demo-field tall">'+e(c['rows'][0][1])+'</div><div class="demo-field">'+e(c['rows'][0][2])+'</div><p>Jij kiest of bezoekers direct boeken of eerst een aanvraag sturen.</p></div>'
  elif slug=='slim-contactformulier':visual='<div class="landing-preview"><small>Voorbeeld · formulier op je website</small><h2>Vertel ons over je plannen.</h2><div class="demo-field">Naam</div><div class="demo-field">E-mailadres</div><div class="demo-field tall">Waarmee kunnen we je helpen?</div><span class="demo-action">Aanvraag versturen</span><p>De aanvraag verschijnt automatisch op jouw bord.</p></div>'
  elif slug=='aanvragen-opvolgen':visual='<div class="landing-preview"><small>Voorbeeld · jouw aanvraagbord</small><h2>Wie vraagt je aandacht?</h2><div class="mini-board-columns"><div><strong>Nieuw</strong><article>Sam Peeters<small>Vraag over een plaatsbezoek</small></article></div><div><strong>Gecontacteerd</strong><article>Noor Jacobs<small>Wacht op antwoord</small></article></div><div><strong>Afgerond</strong><article>Alex Claes<small>Opvolging klaar</small></article></div></div><p>Jij verplaatst de kaart na het opvolgen.</p></div>'
  else:visual='<div class="landing-preview"><small>Voorbeeld · optionele CRM-uitbreiding</small><h2>Sam Peeters</h2><div class="demo-field">Contactgegevens · sam@example.test</div><div class="demo-field tall">Interne notitie<br>Bespreekt de plannen deze week met de partner.</div><div class="demo-field">Volgende actie · opnieuw bellen</div><p>Fictieve gegevens. Alle context bij je contact.</p></div>'
  body='<div class="wrap landing-breadcrumb"><a href="/">Home</a> / <a href="'+('/sector/' if slug.startswith('sector/') else '/alles-in-1/')+'">'+('Sectoren' if slug.startswith('sector/') else 'Oplossingen')+'</a> / '+e(label)+'</div><section class="wrap landing-hero"><div><h1>'+e(heading)+'</h1><p class="landing-intro">'+e(intro)+'</p>'+cta+'</div>'+visual+'</section>'
  body+='<section class="wrap landing-benefits" aria-label="Zo helpt het jouw zaak">'+''.join('<article><h2>'+e(h)+'</h2><p>'+e(t)+'</p></article>' for h,t in sections)+'</section>'
+ if sector:body+=sector_details(slug,label,sections)
  body+='<section class="wrap landing-faq"><h2>Veelgestelde vragen</h2>'+''.join('<details><summary>'+e(q)+'</summary><p>'+e(a)+'</p></details>' for q,a in faqs)+'</section>'
  related=[p for p in pages if p[0]!=slug and (not p[0].startswith('sector/') if sector else p[0].startswith('sector/'))][:4]
  body+='<section class="wrap landing-related"><h2>'+('Ook handig voor jouw zaak' if sector else 'Bekijk het voor jouw zaak')+'</h2><div>'+''.join(f'<a href="/{p[0]}/">{e(p[1])}</a>' for p in related)+'</div></section><section class="wrap solution-help"><h2>Ontdek wat bij jouw werkwijze past.</h2><p>Probeer de omgeving of bespreek eerst je vragen met ons.</p>'+cta+'</section>'
- save(slug,shell(slug,title,desc,body,sector))
-body='<section class="wrap solution-intro"><h1>Online afspraken en klantenbeheer voor jouw sector.</h1><p>Je diensten, je beschikbare momenten en de gegevens die je vraagt: jij bepaalt hoe klanten je bereiken. Bekijk een voorbeeld voor jouw sector.</p></section><section class="wrap sector-directory">'+''.join(f'<a href="/{p[0]}/"><h2>{e(p[1])}</h2><p>{e(p[5])}</p><span>Bekijk de mogelijkheden</span></a>' for p in pages[4:])+'</section><section class="wrap solution-help"><h2>Ook voor andere ondernemers.</h2><p>Werk je in schoonmaak, coaching, catering of een andere sector? Je kunt zelf diensten instellen en kiezen tussen een afspraak en een aanvraag. Vertel ons wat je nodig hebt.</p><div class="actions"><a class="button light" href="/contact/">Contacteer ons</a><a class="text-link" href="/#voor-jouw-zaak">Bekijk meer sectorvoorbeelden</a></div></section>'
-save('sector',shell('sector','Boekingssystemen en klantenbeheer per sector | Afspraakboeken.be','Ontdek slimme formulieren en afspraakplanning voor dakwerkers, beautyzaken, installateurs en tuinaannemers. Bekijk wat past bij jouw zaak.',body))
+ save(slug,shell(slug,title,desc,body,animated))
+body='<section class="wrap solution-intro"><h1>Slimme formulieren, afspraken en klantopvolging voor jouw sector.</h1><p>Kies dezelfde sector als bij je gratis proefperiode. Ontdek hoe je aanvragen verzamelt, gesprekken inplant en klanten opvolgt met de functies die bij jouw werk passen.</p></section><section class="wrap sector-catalogue" aria-labelledby="category-title"><h2 id="category-title">Alle sectoren</h2><div class="sector-directory">'
+for c in categories:
+ p=next(p for p in pages if p[0]=='sector/'+c['slug'])
+ body+='<a href="/'+p[0]+'/"><h3>'+e(c['label'])+'</h3><p>'+e(p[3])+'</p><span>Bekijk de mogelijkheden</span></a>'
+body+='</div></section><section class="wrap sector-catalogue" aria-labelledby="profession-title"><h2 id="profession-title">Specifiek voor jouw beroep</h2><div class="sector-directory">'+''.join('<a href="/'+p[0]+'/"><h3>'+e(p[1])+'</h3><p>'+e(p[3])+'</p><span>Bekijk de mogelijkheden</span></a>' for p in pages[4:] if p[0] not in category_by_slug)+'</div></section><section class="wrap solution-help"><h2>Bespreek jouw werkwijze.</h2><p>Twijfel je welke aanpak past? Vertel ons hoe je klanten vandaag contact opnemen en wat je eenvoudiger wilt maken.</p>'+cta+'</section>'
+save('sector',shell('sector','Online afspraken en CRM per sector | Afspraakboeken.be','Bekijk alle 13 sectoren: van bouw en beauty tot sport, onderwijs en zakelijke diensten. Ontdek slimme formulieren, afspraakplanning en optioneel CRM.',body))
 paths=['index.html','prijzen/index.html','alles-in-1/index.html','contact/index.html']+[p[0]+'/index.html' for p in pages]+['sector/index.html']
 for path in paths:
  p=R/path;s=p.read_text();s=re.sub(r'<header class="header">[\s\S]*?</header>',lambda _:header,s,count=1);s=re.sub(r'<footer\b[\s\S]*?</footer>',lambda _:footer,s,count=1)
  for old,new in links.items():s=s.replace('href="'+old+'"','href="'+new+'"')
- s=re.sub(r'site\.(css|js)\?v=[\d.]+',r'site.\1?v=0.15.1',s);p.write_text(s)
+ s=re.sub(r'site\.(css|js)\?v=[\d.]+',r'site.\1?v=0.16.0',s);p.write_text(s)
 (R/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('  <url><loc>https://afspraakboeken.be/'+p.removesuffix('index.html')+'</loc></url>\n' for p in paths)+'</urlset>\n')
-(R/'deployment.json').write_text(json.dumps({'version':'0.15.1','site':'afspraakboeken.be','release':'sector-crm-airco-elektriciens-dakwerkers-beauty'},indent=2)+'\n')
+(R/'deployment.json').write_text(json.dumps({'version':'0.16.0','site':'afspraakboeken.be','release':'all-registration-sectors-with-usecases-and-benefits'},indent=2)+'\n')
 
 # Static-host fallback: an immediate refresh when Apache redirects are unavailable.
 for old in ['voor','voor/dakwerkers','voor/beauty-wellness','voor/installateurs','voor/tuinaannemers']:
