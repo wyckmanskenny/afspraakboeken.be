@@ -2,8 +2,7 @@
 // The packaged homepage points to the separate app. The private review copy
 // lives under /website/ alongside the app and keeps its navigation local.
 const appBase=location.hostname.endsWith('.chatgpt.site')&&location.pathname.startsWith('/website/')?new URL('../',location.href):new URL('https://app.afspraakboeken.be/');
-const targets={app:new URL('./',appBase),register:new URL('registreren/',appBase),trial:new URL('registreren/?mode=trial',appBase),booking:new URL('demo/?mode=choose&tenant=lune',appBase)};
-for(const [key,value] of Object.entries({primary:'#264653',secondary:'#2a9d8f',background:'#f8fafb'}))targets.booking.searchParams.set('theme_'+key,value);
+const targets={app:new URL('./',appBase),register:new URL('registreren/',appBase),trial:new URL('registreren/?mode=trial',appBase),booking:new URL('demo/?mode=choose&tenant=lune&v=0.20.1',appBase)};
 for(const link of document.querySelectorAll('[data-app-link]'))link.href=targets[link.dataset.appLink].href;
 const menu=document.querySelector('.menu-toggle'),navigation=document.getElementById('navigation');
 const solutionsMenu=document.querySelector('.solutions-menu');
